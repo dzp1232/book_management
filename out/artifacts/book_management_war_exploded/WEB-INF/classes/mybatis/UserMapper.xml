@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dzp.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="cn.dzp.entity.User">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="age" jdbcType="TINYINT" property="age" />
+    <result column="integrity" jdbcType="INTEGER" property="integrity" />
+    <result column="is_administrator" jdbcType="BIT" property="isAdministrator" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, sex, age, integrity, is_administrator, phone, gmt_create, gmt_modified
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.dzp.entity.User">
+    insert into user (id, name, sex, 
+      age, integrity, is_administrator, 
+      phone, gmt_create, gmt_modified
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
+      #{age,jdbcType=TINYINT}, #{integrity,jdbcType=INTEGER}, #{isAdministrator,jdbcType=BIT}, 
+      #{phone,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.dzp.entity.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
+      <if test="integrity != null">
+        integrity,
+      </if>
+      <if test="isAdministrator != null">
+        is_administrator,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=TINYINT},
+      </if>
+      <if test="integrity != null">
+        #{integrity,jdbcType=INTEGER},
+      </if>
+      <if test="isAdministrator != null">
+        #{isAdministrator,jdbcType=BIT},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.dzp.entity.User">
+    update user
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        age = #{age,jdbcType=TINYINT},
+      </if>
+      <if test="integrity != null">
+        integrity = #{integrity,jdbcType=INTEGER},
+      </if>
+      <if test="isAdministrator != null">
+        is_administrator = #{isAdministrator,jdbcType=BIT},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.dzp.entity.User">
+    update user
+    set name = #{name,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      age = #{age,jdbcType=TINYINT},
+      integrity = #{integrity,jdbcType=INTEGER},
+      is_administrator = #{isAdministrator,jdbcType=BIT},
+      phone = #{phone,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <!-- 自己写的增删改查-->
+  <!--模糊查询-->
+  <select id="getUserListLike" resultType="cn.dzp.entity.User">
+    select * from user where name like "${name}";
+</select>
+  <select id="getUserById" parameterType="Long" resultType="cn.dzp.entity.User">
+    select * from user where id = #{id}
+  </select>
+  <select id="getUserList"  resultType="cn.dzp.entity.User">
+    select  * from user
+  </select>
+  <select id="selectUserByNP" resultType="cn.dzp.entity.User">
+    select * from user where name=#{name} and pwd=#{pwd}
+  </select>
+  <insert id="addUser" parameterType="cn.dzp.entity.User">
+    insert into user(id,name,pwd,sex,age,integrity,is_administrator,phone) values (#{id},#{name},#{pwd},#{sex},#{age},#{integrity},#{isAdministrator},#{phone})
+  </insert>
+  <update id="updateUserById" parameterType="cn.dzp.entity.User">
+    update user set id = #{id},name = #{name},pwd = #{pwd} where id=#{id}
+  </update>
+  <delete id="deleteUserById" parameterType="Long">
+    delete from user where id = #{id}
+  </delete>
+</mapper>
